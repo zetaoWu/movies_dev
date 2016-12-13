@@ -1,0 +1,30 @@
+extend ../layout
+
+block content
+	.container
+		.row
+			form.form-horizontal(method="post",action="/admin/movie/new")
+				.form-group
+					label.col-sm-2.control-label(for="inputTitle") 电影名字
+					.col-sm-10
+						input#inputTitle.col-sm-10.form-control(type="text",name="movie[title]")
+				.form-group
+					label.col-sm-2.control-label(for="inputDirector") 导演
+					.col-sm-10
+						input#inputDirector.col-sm-10.form-control(type="text",name="movie[director]")
+				.form-group
+					label.col-sm-2.control-label(for="inputCountry") 国家
+					.col-sm-10
+						input#inputCountry.col-sm-10.form-control(type="text",name="movie[country]")
+				.form-group
+					label.col-sm-2.control-label(for="inputLanguage") 语言
+					.col-sm-10
+						input#inputLanguage.col-sm-10.form-control(type="text",name="movie[language]")
+				.form-group
+					label.col-sm-2.control-label(for="inputYear") 上映年份
+					.col-sm-10
+						input#inputYear.col-sm-10.form-control(type="text",name="movie[year]")
+				.form-group
+					label.col-sm-2.control-label(for="inputSummary") 简介
+					.col-sm-10
+						input#inputSummary.col-sm-10.form-control(type="text",name="movie[summary]")
