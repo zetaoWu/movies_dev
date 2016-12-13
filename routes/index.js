@@ -1,54 +1,37 @@
 var express = require('express');
 var router = express.Router();
+var _ = require('underscore');
+var Movie = require('../models/movie.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
- res.render('index', {
-        title: 'imooc 首页',
-        movies: [{
-            title: "复仇者联盟2",
-            _id: 1,
-            poster: 'http://img31.mtime.cn/mg/2015/03/27/120537.13212993_270X405X4.jpg'
-        }, {
-            title: "复仇者联盟2",
-            _id: 2,
-            poster: 'http://img31.mtime.cn/mg/2015/03/27/120537.13212993_270X405X4.jpg'
-        }, {
-            title: "复仇者联盟2",
-            _id: 3,
-            poster: 'http://img31.mtime.cn/mg/2015/03/27/120537.13212993_270X405X4.jpg'
-        }, {
-            title: "复仇者联盟2",
-            _id: 4,
-            poster: 'http://img31.mtime.cn/mg/2015/03/27/120537.13212993_270X405X4.jpg'
-        }, {
-            title: "复仇者联盟2",
-            _id: 5,
-            poster: 'http://img31.mtime.cn/mg/2015/03/27/120537.13212993_270X405X4.jpg'
-        }]
+    Movie.fetch(function(err, movies) {
+        if (err) {
+            console.log(err);
+        }
+        res.render('index', {
+            title: '首页',
+            movies: movies
+        })
     })
 })
 
 //detail page
-router.get('/movie/:id', function (req, res) {
-    res.render('detail', {
-        title: 'imooc 详情',
-        movie: {
-            doctor: '乔斯·韦登',
-            country: '美国',
-            title: '复仇者联盟2',
-            year: '2015',
-            poster: 'http://img31.mtime.cn/mg/2015/03/27/120537.13212993_270X405X4.jpg',
-            language: '英语',
-            flash: 'http://v.youku.com/v_show/id_XODc4NDY0MjA4.html',
-            summary: '影片讲述当钢铁侠试图启动处于休眠状态的维持和平计划时，事情出了差错。于是，在地球面临生死存亡的紧急关头时，强大的超级英雄们挺身而出承担起拯救世界的重任，他们将阻止可怕的人工智能机器人“奥创”制定恐怖计划。'
-        }
-    })
+router.get('/movie/:id', function(req, res) {
+    var id = req.params.id;
+    Movie.findById(id, function(err, movie) {
+        res.render('detail', {
+            title: '详情页',
+            id: id,
+            movie: movie,
+        })
+    });
 })
+
 //admin page
-router.get('/admin/movie', function (req, res) {
+router.get('/admin/movie', function(req, res) {
     res.render('admin', {
-        title: 'imooc 后台录入页',
+        title: '后台录入页',
         movie: {
             doctor: '',
             country: '',
@@ -61,20 +44,72 @@ router.get('/admin/movie', function (req, res) {
         }
     })
 })
+
+　//更新
+router.get('/admin/update/:id', function(req, res) {
+    var id = req.params.id;
+    if (id) {
+        Movie.findById(id, function(err, movie) {
+            res.render('admin', {
+                title: '后台更新页',
+                movie: movie
+            });
+        })
+    }
+});
+
+router.post('/admin/movie/new', function(req, res) {
+    var id = req.body.movie._id;
+    var movieObj = req.body.movie;
+    var _movie;
+
+    if (id !== 'undefined') {
+        //存在
+        Movie.findById(id, function(err, movie) {
+            if (err) {
+                console.log(err);
+            }
+            //引入underScore 新字段替换老字段。
+            _movie = _.extend(movie, movieObj);
+            _movie.save(function(err, movie) {
+                if (err) {
+                    console.log(err);
+                }
+                res.redirect('/movie/' + movie._id);
+            })
+        });
+    } else {
+        //不存在
+        _movie = new Movie({
+            doctor: movieObj.doctor,
+            title: movieObj.title,
+            country: movieObj.country,
+            language: movieObj.language,
+            year: movieObj.year,
+            poster: movieObj.poster,
+            summary: movieObj.summary,
+            flash: movieObj.flash
+        });
+        _movie.save(function(err, movie) {
+            if (err) {
+                console.log(err);
+            }
+            res.redirect('/movie/' + movie._id);
+        });
+    }
+});
+
+
 //list page
-router.get('/admin/list', function (req, res) {
-    res.render('list', {
-        title: 'imooc 列表页',
-        movies: [{
-            doctor: '乔斯·韦登',
-            country: '美国',
-            title: '复仇者联盟2',
-            year: '2015',
-            poster: 'http://img31.mtime.cn/mg/2015/03/27/120537.13212993_270X405X4.jpg',
-            language: '英语',
-            flash: 'http://v.youku.com/v_show/id_XODc4NDY0MjA4.html',
-            summary: '影片讲述当钢铁侠试图启动处于休眠状态的维持和平计划时，事情出了差错。于是，在地球面临生死存亡的紧急关头时，强大的超级英雄们挺身而出承担起拯救世界的重任，他们将阻止可怕的人工智能机器人“奥创”制定恐怖计划。'
-        }]
+router.get('/admin/list', function(req, res) {
+    Movie.fetch(function(err, movies) {
+        if (err) {
+            console.log(err);
+        }
+        res.render('index', {
+            title: '电影列表',
+            movies: movies
+        })
     })
 })
 
