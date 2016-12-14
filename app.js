@@ -9,7 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var mongoose =require('mongoose');
 var app = express();
-
+app.locals.moment = require('moment');
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://127.0.0.1:27017/movie');
 
@@ -39,7 +39,6 @@ app.use(function (req, res, next) {
 });
 
 
-app.use('/bower_components', express.static(__dirname + '/bower_components'));
 app.listen(port);
 console.log('imooc started on port ' + port);
 

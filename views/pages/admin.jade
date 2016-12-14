@@ -4,11 +4,11 @@ block content
 	.container
 		.row
 			form.form-horizontal(method="post",action="/admin/movie/new")
+			  input#inputTitle.form-control(type="hidden",name="movie[_id]",value="#{moive._id}")
 				.form-group
 					label.col-sm-2.control-label(for="inputTitle") 电影名字
 					.col-sm-10
 						input#inputTitle.form-control(type="text",name="movie[title]",value="#{movie.title}")
-
 				.form-group
 					label.col-sm-2.control-label(for="inputDoctor") 电影导演
 					.col-sm-10

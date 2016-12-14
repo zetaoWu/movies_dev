@@ -63,7 +63,7 @@ router.post('/admin/movie/new', function(req, res) {
     var movieObj = req.body.movie;
     var _movie;
 
-    if (id !== 'undefined') {
+    if (id!=undefined) {
         //存在
         Movie.findById(id, function(err, movie) {
             if (err) {
@@ -106,7 +106,7 @@ router.get('/admin/list', function(req, res) {
         if (err) {
             console.log(err);
         }
-        res.render('index', {
+        res.render('list', {
             title: '电影列表',
             movies: movies
         })
