@@ -22,6 +22,7 @@ var MovieSchema=new mongoose.Schema({
     }
 });
 
+//设置中间件
 MovieSchema.pre('save',function(next){
     if(this.isNew){
         this.meta.createAt=this.meta.updateAt=Date.now();

@@ -99,7 +99,6 @@ router.post('/admin/movie/new', function(req, res) {
     }
 });
 
-
 //list page
 router.get('/admin/list', function(req, res) {
     Movie.fetch(function(err, movies) {
@@ -113,7 +112,8 @@ router.get('/admin/list', function(req, res) {
     })
 })
 
-router.delete('./admin/list',function(req,res){
+//删除
+router.delete('/admin/list',function(req,res){
     var id=req.query.id;
     if(id){
         Movie.remove({_id:id},function(err,movie){
