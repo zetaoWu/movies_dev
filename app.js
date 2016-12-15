@@ -39,7 +39,7 @@ app.use(function (req, res, next) {
 });
 
 
-app.listen(port);
+// app.listen(port);
 console.log('imooc started on port ' + port);
 
 module.exports = app;
