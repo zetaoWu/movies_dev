@@ -5,6 +5,8 @@ var Movie = require('../models/movie.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    console.log('user in session:');
+    console.log(req.session.user);
     Movie.fetch(function(err, movies) {
         if (err) {
             console.log(err);
@@ -112,6 +114,8 @@ router.get('/admin/list', function(req, res) {
     })
 })
 
+
+
 //删除
 router.delete('/admin/list',function(req,res){
     var id=req.query.id;
@@ -126,5 +130,6 @@ router.delete('/admin/list',function(req,res){
         });
     }
 })
+
 
 module.exports = router;

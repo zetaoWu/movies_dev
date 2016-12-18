@@ -22,7 +22,8 @@ var MovieSchema=new mongoose.Schema({
     }
 });
 
-//设置中间件
+
+//设置中间件 。在save方法中提前预处理。
 MovieSchema.pre('save',function(next){
     if(this.isNew){
         this.meta.createAt=this.meta.updateAt=Date.now();
@@ -34,11 +35,15 @@ MovieSchema.pre('save',function(next){
 
 MovieSchema.statics={
     fetch(cb){
-        return this.find({}).sort('meta.updateAt').exec(cb);
+        return this.find().sort('meta.updateAt').exec(cb);
     },
     findById(id,cb){
         return this.findOne({_id:id}).exec(cb);
+    },
+    findByName(query,cb){
+        return this.find().exec(cb);
     } 
 }
+
 
 module.exports= MovieSchema;
