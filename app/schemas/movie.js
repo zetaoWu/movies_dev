@@ -1,7 +1,13 @@
 //schema数据模型
-
 var mongoose=require('mongoose');
-var MovieSchema=new mongoose.Schema({
+var Schema=mongoose.Schema;
+var ObjectId=Schema.Types.ObjectId;
+
+var MovieSchema=new Schema({
+    category:{
+        type:ObjectId,
+        ref:'Category',
+    },
     doctor:String,
     title:String,
     language:String,

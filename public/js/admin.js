@@ -1,3 +1,4 @@
+//  $(document).ready(function(){})
 $(function(){
     $('.del').click(function(e){
         var target=$(e.target);
@@ -6,7 +7,7 @@ $(function(){
         
         $.ajax({
             type:'DELETE',
-            url:'/admin/list?id='+id,
+            url:'/admin/movie/list?id='+id,
         }).done(function(result){
             if(result.success===1){
                 if(tr.length>0){

@@ -1,135 +1,44 @@
+var Index = require('../app/controllers/index');
+var Movie = require('../app/controllers/movie');
+var User = require('../app/controllers/user');
+var Comment =require('../app/controllers/comment');
+var Category =require('../app/controllers/category'); 
+
 var express = require('express');
 var router = express.Router();
-var _ = require('underscore');
-var Movie = require('../models/movie.js');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    console.log('user in session:');
-    console.log(req.session.user);
-    Movie.fetch(function(err, movies) {
-        if (err) {
-            console.log(err);
-        }
-        res.render('index', {
-            title: '首页',
-            movies: movies
-        })
-    })
-})
-
-//detail page
-router.get('/movie/:id', function(req, res) {
-    var id = req.params.id;
-    Movie.findById(id, function(err, movie) {
-        res.render('detail', {
-            title: '详情页',
-            id: id,
-            movie: movie,
-        })
-    });
-})
-
-//admin page
-router.get('/admin/movie', function(req, res) {
-    res.render('admin', {
-        title: '后台录入页',
-        movie: {
-            doctor: '',
-            country: '',
-            title: '',
-            year: '',
-            poster: '',
-            language: '',
-            flash: '',
-            summary: ''
-        }
-    })
-})
-
-　//更新
-router.get('/admin/update/:id', function(req, res) {
-    var id = req.params.id;
-    if (id) {
-        Movie.findById(id, function(err, movie) {
-            res.render('admin', {
-                title: '后台更新页',
-                movie: movie
-            });
-        })
-    }
+//预处理 。pre handle user
+router.use(function (req, res, next) {
+    var _user = req.session.user;
+    res.locals.user = _user;
+    return next();
 });
 
-router.post('/admin/movie/new', function(req, res) {
-    var id = req.body.movie._id;
-    var movieObj = req.body.movie;
-    var _movie;
+// index page
+router.get('/', Index.index);
 
-    if (id!=undefined) {
-        //存在
-        Movie.findById(id, function(err, movie) {
-            if (err) {
-                console.log(err);
-            }
-            //引入underScore 新字段替换老字段。
-            _movie = _.extend(movie, movieObj);
-            _movie.save(function(err, movie) {
-                if (err) {
-                    console.log(err);
-                }
-                res.redirect('/movie/' + movie._id);
-            })
-        });
-    } else {
-        //不存在
-        _movie = new Movie({
-            doctor: movieObj.doctor,
-            title: movieObj.title,
-            country: movieObj.country,
-            language: movieObj.language,
-            year: movieObj.year,
-            poster: movieObj.poster,
-            summary: movieObj.summary,
-            flash: movieObj.flash
-        });
-        _movie.save(function(err, movie) {
-            if (err) {
-                console.log(err);
-            }
-            res.redirect('/movie/' + movie._id);
-        });
-    }
-});
+//category
+router.get('/admin/category/new',User.signinRequired,User.adminRequired,Category.new);
+router.post('/admin/category',User.signinRequired,User.adminRequired,Category.save);
+router.get('/admin/category/list',User.signinRequired,User.adminRequired,Category.list);
 
-//list page
-router.get('/admin/list', function(req, res) {
-    Movie.fetch(function(err, movies) {
-        if (err) {
-            console.log(err);
-        }
-        res.render('list', {
-            title: '电影列表',
-            movies: movies
-        })
-    })
-})
+//movie
+router.get('/movie/:id', Movie.detail);
+router.get('/admin/movie/update/:id',User.signinRequired,User.adminRequired,  Movie.update);
+router.get('/admin/movie/new', User.signinRequired,User.adminRequired, Movie.new);
+router.get('/admin/movie/list', User.signinRequired,User.adminRequired, Movie.list)
+router.post('/admin/movie',User.signinRequired,User.adminRequired,Movie.save);
+router.delete('/admin/movie/list',User.signinRequired,User.adminRequired, Movie.del);
 
+//user
+router.post('/user/signup', User.signup);
+router.post('/user/signin', User.signin);
+router.get('/signin',User.showSignin);
+router.get('/signup',User.showSignup);
+router.get('/logout', User.logout);
+router.get('/admin/user/list', User.signinRequired,User.adminRequired,User.list);
 
-
-//删除
-router.delete('/admin/list',function(req,res){
-    var id=req.query.id;
-    if(id){
-        Movie.remove({_id:id},function(err,movie){
-            if(err){
-                console.log(err);
-            }
-            else{
-                res.json({success:1});
-            }
-        });
-    }
-})
-
+//comment
+router.post('/user/comment',User.signinRequired,Comment.save);
 
 module.exports = router;

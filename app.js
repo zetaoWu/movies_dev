@@ -8,15 +8,13 @@ var mongoStore=require('connect-mongo')(session);
 var bodyParser = require('body-parser');
 var port = process.env.PORT || 3000;
 var index = require('./routes/index');
-var users = require('./routes/users');
 var app = express();
 app.locals.moment = require('moment');
 mongoose.Promise = global.Promise
 var dbUrl='mongodb://127.0.0.1:27017/movie';
 mongoose.connect(dbUrl);
-
 // view engine setup
-app.set('views', path.join(__dirname, 'views/pages'));
+app.set('views', path.join(__dirname, '/app/views/pages'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
@@ -27,10 +25,11 @@ app.set('view engine', 'jade');
 
 // app.use(express.cookieParser());
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(session());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   secret:'imooc',
@@ -41,10 +40,17 @@ app.use(session({
   resave:false,
 	saveUninitialized:true
 }));
-app.use(express.static(path.join(__dirname, 'public')));
 
+//配置  生产 开发环境
+if('development'===app.get('env')){
+  app.set('showStackError',true);//在屏幕上获取error
+  app.use(logger(':method :url :status')); //log配置
+  app.locals.pretty=true; //格式化
+  mongoose.set('debug',true);
+}
+
+//路由
 app.use('/', index);
-app.use('/user', users);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

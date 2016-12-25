@@ -11,6 +11,13 @@ var UserSchema = new mongoose.Schema({
         type: String,
     },
     password: String,
+    //0 ,nommal user
+    //1: verified user . 注册过
+    //2: professonal user  高级用户
+    role:{
+        type:Number,
+        default:0,
+    },
     meta: {
         createAt: {
             type: Date,

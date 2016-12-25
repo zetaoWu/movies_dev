@@ -1,23 +1,30 @@
-var express = require('express');
-var router = express.Router();
-
 var User = require('../models/user.js');
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
-});
 
-router.post('/signup', function (req, res) {
+
+exports.showSignup = function (req, res) {
+  res.render('signup', {
+    title: '注册页面'
+  });
+}
+
+exports.showSignin = function (req, res) {
+  res.render('signin', {
+    title: '登录页面'
+  });
+}
+
+exports.signup = function (req, res) {
   var _user = req.body.user;
 
   User.findOne({ name: _user.name }, function (err, user) {
     if (err) {
       console.log(err);
     } else {
+
       console.log(user + '---user');
       if (user) {
         console.log('存在');
-         res.redirect('/');
+        res.redirect('/signin');
       } else {
         console.log('不存在');
         var user = new User(_user);
@@ -26,14 +33,14 @@ router.post('/signup', function (req, res) {
             console.log(err);
           }
           console.log(user);
-          res.redirect('/user/admin/userlist')
+          res.redirect('/')
         })
       }
     }
   });
-});
+};
 
-router.post('/signin', function (req, res) {
+exports.signin = function (req, res) {
   var _user = req.body.user;
   var name = _user.name;
   var password = _user.password;
@@ -45,7 +52,7 @@ router.post('/signin', function (req, res) {
 
     if (!user) {
       console.log('用户没找到--跳转首页');
-      return res.redirect('/');
+      return res.redirect('/signup');
     } else {
 
       user.comparePassword(password, function (err, isMatch) {
@@ -58,14 +65,14 @@ router.post('/signin', function (req, res) {
           return res.redirect('/');
         } else {
           console.log("Password is not matched");
-          res.redirect('/');
+          res.redirect('/signin');
         }
       });
     }
   });
-})
+};
 
-router.get('/admin/userlist', function (req, res) {
+exports.list = function (req, res) {
   User.fetch(function (err, users) {
     if (err) {
       console.warn(err);
@@ -75,6 +82,30 @@ router.get('/admin/userlist', function (req, res) {
       users: users,
     })
   })
-})
+}
 
-module.exports = router;
+exports.logout = function (req, res) {
+  console.log("登出");
+  delete req.session.user;
+  res.redirect('/');
+};
+
+
+//midware for user
+exports.signinRequired=function(req,res,next){
+  var user=req.session.user;
+  console.log('--signinRequired--'+user);
+  if(!user){
+    return res.redirect('/signin');
+  }
+  next();
+}
+
+
+exports.adminRequired=function(req,res,next){
+  var user=req.session.user;
+  // if(user.role<=10){
+  //   return res.redirect('/signin');
+  // }
+  next();
+}
