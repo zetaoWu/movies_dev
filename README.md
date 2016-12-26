@@ -20,7 +20,7 @@ node.js学习开发的电影站。
 <br>
 <br>    
 
---2016/12/18   建站第一期结束
+--2016/12/18   
 ######---
   1.将session进行mongo持久化，引入 express-session， connect-mongo<br>
 

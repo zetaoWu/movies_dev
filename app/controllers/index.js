@@ -8,12 +8,12 @@ exports.index = function (req, res, next) {
             if (err) {
                 console.log(err);
             }
+            console.log(categories.toString());
             res.render('index', {
                 title: '首页',
                 categories: categories,
             })
         });
-
 }
 
 

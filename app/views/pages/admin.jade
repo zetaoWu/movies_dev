@@ -12,8 +12,9 @@ block content
 						input#inputTitle.form-control(type="text",name="movie[categoryName]",value=movie.categoryName)
 				.form-group
 					label.col-sm-2.control-label  分类选择
-					each cat in categories
-						lable.radio-inline
+					if categories
+						each cat in categories
+							lable.radio-inline
 							input(type="radio",name="movie[category]",value=cat._id)
 							| #{cat.name}
 				.form-group
