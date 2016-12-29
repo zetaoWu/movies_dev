@@ -72,7 +72,6 @@ exports.save = function (req, res) {
             _movie = _.extend(movie, movieObj);
             _movie.save(function (err, movie) {
                 if (err) {
-                    z
                     console.log(err);
                 }
                 res.redirect('/movie/' + movie._id);
@@ -86,12 +85,19 @@ exports.save = function (req, res) {
             if (err) {
                 console.log('333' + err);
             }
-            Category.findById(categoryId, function (err, category) {
-                category.movies.push(movie._id);
-                category.save(function (err, category) {
-                    res.redirect('/movie/' + movie._id);
+            if(categoryId) {
+                Category.findById(categoryId, function (err, category) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    category.movies.push(movie._id);
+                    category.save(function (err, category) {
+                        res.redirect('/movie/' + movie._id);
+                    });
                 });
-            });
+            }else{
+                res.redirect('/movie/' + movie._id);
+            }
         });
     }
 };

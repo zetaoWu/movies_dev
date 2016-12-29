@@ -24,4 +24,14 @@ node.js学习开发的电影站。
 ######---
   1.将session进行mongo持久化，引入 express-session， connect-mongo<br>
 
+
+--2016/12/29
+  1.电影分类完成
+  2.快速引入豆瓣电影信息
+  3.修复bug
+
+
+
+
+
    
