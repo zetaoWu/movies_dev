@@ -1,0 +1,38 @@
+<%- include('../includes/head') %>
+<%- include('../includes/header') %>
+<div class="container">
+    <div class="row">
+        <% categories.forEach((cat)=>{ %>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>
+                    <a href="/results?cat=<%= cat._id %>&p=0">
+                        <%= cat.name %>
+                    </a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <% if (cat.movies && cat.movies.length >0) { cat.movies.forEach((item)=>{ %>
+                <div class="col-md-2">
+                    <div class="thumbnail">
+                        <a href="/movie/<%= item._id %>">
+                            <% if(item.poster.startsWith('http')){ %>
+                            <img src="<%= item.poster %>" alt="<%= item.title %>">
+                            <% }else{ %>
+                            <img src="/upload/<%= item.poster %>" alt="<%= item.title %>">
+                            <% } %>
+                        </a>
+                        <div class="caption">
+                            <h3><%= item.title %></h3>
+                            <a href="/movie/<%= item._id %>" role="button" class="btn btn-primary">预告片</a>
+                        </div>
+                    </div>
+                </div>
+                <% })} %>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+<%- include('../includes/footer') %>
+

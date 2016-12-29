@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>#{title}</title>
-
-include ./includes/head
+    <meta charset="utf-8">
+    <title>#{title}</title>
+    <%- include('./includes/head') %>
+    include includes/head.ejs
 </head>
 <body>   
- 
-include ./includes/header
+ <% %>
+include includes/header.ejs
 block content
 </body>
 </html>

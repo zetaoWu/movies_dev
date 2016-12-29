@@ -1,0 +1,48 @@
+<%- include('../includes/head') %>
+<%- include('../includes/header') %>
+
+<div class="container">
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>类别</th>
+                <th>电影名字</th>
+                <th>导演</th>
+                <th>国家</th>
+                <th>语言</th>
+                <th>上映年份</th>
+                <th>录入时间</th>
+                <th>pv</th>
+                <th>简介</th>
+                <th>查看</th>
+                <th>更新</th>
+                <th>删除</th>
+            </tr>
+            <tbody>
+            <% movies.forEach((item) =>{ %>
+            <tr class="item-id-<%= item._id %>">
+                <td><%= item.category.name %></td>
+                <td><%= item.title %></td>
+                <td><%= item.director %></td>
+                <td><%= item.country %></td>
+                <td><%= item.language %></td>
+                <td><%= item.year %></td>
+                <td><%= moment(item.meta.updateAt).format('MM/DD/YYYY') %></td>
+                <td><%= item.pv %></td>
+                <td><%= item.summary %></td>
+                <td><a href="/movie/<%= item._id %>" target="_blank">查看</a></td>
+                <td><a href="/admin/movie/update/<%= item._id %>" target="_blank">修改</a></td>
+                <td>
+                    <button class="btn btn-danger del" data-id="<%= item._id %>">删除</button>
+                </td>
+            </tr>
+            <% }) %>
+            </tbody>
+
+            </thead>
+        </table>
+    </div>
+</div>
+<script src="/js/admin.js"></script>
+<%- include('../includes/footer') %>
