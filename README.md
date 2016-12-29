@@ -4,11 +4,6 @@ node.js学习开发的电影站。
 
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 --2016/12/15   建站第一期结束
 ######---
@@ -22,13 +17,14 @@ node.js学习开发的电影站。
 
 --2016/12/18   
 ######---
-  1.将session进行mongo持久化，引入 express-session， connect-mongo<br>
+  1.将session进行mongo持久化<br>
+  2.引入 express-session，connect-mongo<br>
 
 
 --2016/12/29
-  1.电影分类完成
-  2.快速引入豆瓣电影信息
-  3.修复bug
+  1.电影分类完成<br>
+  2.快速引入豆瓣电影信息<br>
+  3.修复bug<br>
 
 
 
