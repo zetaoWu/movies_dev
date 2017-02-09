@@ -1,7 +1,7 @@
 var _ = require('underscore');
-var Category = require("../models/Category.js");
+var Category = require("../models/category.js");
 var Movie = require('../models/movie.js');
-var Comment = require('../models/Comment.js');
+var Comment = require('../models/comment.js');
 var fs = require('fs');
 var path = require('path');
 
