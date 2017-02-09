@@ -1,1 +1,1 @@
-web:node grunt
+web:grunt
