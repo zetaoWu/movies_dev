@@ -1,4 +1,4 @@
-var Comment = require('../models/Comment.js');
+var Comment = require('../models/comment.js');
 
 exports.save = function (req, res) {
     var _comment = req.body.comment;
