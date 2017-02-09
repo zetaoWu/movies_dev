@@ -1,3 +1,4 @@
+"use strict"
 //schema数据模型
 var mongoose = require('mongoose');
 //加密

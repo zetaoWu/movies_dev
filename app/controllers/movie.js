@@ -2,6 +2,8 @@ var _ = require('underscore');
 var Category = require("../models/Category.js");
 var Movie = require('../models/movie.js');
 var Comment = require('../models/Comment.js');
+var fs = require('fs');
+var path = require('path');
 
 //detail page
 exports.detail = function (req, res) {
@@ -50,18 +52,46 @@ exports.update = function (req, res) {
                 res.render('admin', {
                     title: '后台更新页',
                     movie: movie,
-                    categories:categories,
+                    categories: categories,
                 });
             });
         })
     }
 };
 
+//admin  save poster
+exports.savePoster = function (req, res,next) {
+    var posterData = req.files.uploadPoster;
+    var filePath = posterData.path;
+    var originFilename = posterData.originalFilename;
+    console.log(posterData+"----"+filePath+"---"+originFilename+"---222");
+    if (originFilename) {
+        //本地的地址
+        fs.readFile(filePath, function (err, data) {
+            var timestamp=Date.now();
+            var type=posterData.type.split('/')[1];  //获取type
+            var poster=timestamp+'.'+type;   //时间戳 + 后缀
+            var newPath=path.join(__dirname,'../../','public/upload/'+poster);
+            
+            fs.writeFile(newPath,data,function(err){
+                req.poster=poster;
+                next();
+            });
+        })
+    }else{
+         next();
+    }
+}
+// admin  save 
 exports.save = function (req, res) {
     var id = req.body.movie._id;
     var movieObj = req.body.movie;
     var _movie;
-    console.log('-1122-' + movieObj.category);
+
+    if(req.poster){
+        movieObj.poster=req.poster;
+    }
+
     if (id) {
         //存在
         Movie.findById(id, function (err, movie) {
@@ -85,7 +115,7 @@ exports.save = function (req, res) {
             if (err) {
                 console.log('333' + err);
             }
-            if(categoryId) {
+            if (categoryId) {
                 Category.findById(categoryId, function (err, category) {
                     if (err) {
                         console.log(err);
@@ -95,7 +125,7 @@ exports.save = function (req, res) {
                         res.redirect('/movie/' + movie._id);
                     });
                 });
-            }else{
+            } else {
                 res.redirect('/movie/' + movie._id);
             }
         });

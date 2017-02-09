@@ -3,9 +3,9 @@ extends ../layout
 block content
 	.container
 		.row
-			table.table.table-hover.table-bordered
+			table.table.table-hover.table-striped.table-condensed
 				thead
-					tr
+					tr.text-center
 						th 电影名称
 						th 导演
 						th 国家
@@ -15,7 +15,7 @@ block content
 						th 查看
 						th 更新
 						th 删除
-					tbody
+					tbody.text-left
 						each item in movies
 							tr(class="item-id-#{item._id}")
 								td #{item.title}

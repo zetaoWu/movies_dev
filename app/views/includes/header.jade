@@ -1,9 +1,33 @@
+
 .container
-	.row
-		.page-header
-			h1= title
-			small 电影专区
+	.img.img-rounded(src="/wp-content/uploads/2014/06/download.png")
+		.row.toptitle
+			.col-md-2
+				h4.text-top= title
+					small 电影专区
+			.col-md-6
+				ul.nav.nav-pills
+					li.active(role="presentation")
+						a(href="#") 首页
+					li(role="presentation")
+						a(href="#") 频道
+					li(role="presentation")
+						a(href="#") 系列
+					li(role="presentation")
+						a(href="#") 幕后
+					li(role="presentation")
+						a(href="#") 专题
+			.col-md-4
+				form(method="GET",action='/results')
+					.input-group.col-sm-10.pullright
+						input.glyphicon.glyphicon-search.form-control(type='text',name='q')
+						span.input-group-btn
+							button.btn.btn-default(type='submit') 提交
 .narbar.navbar-default.navbar-fixed-bottom
+	.alert.alert-warning.alert-dismissible(role="alert")
+		button.close(type="button" data-dismiss="alert" aria-label="Close") &times;
+		strong warning!  <u>点击链接查看详情 </u>
+		a.alert-link(href="#")  www.baidu.com
 	.container
 		.navbar-header
 			a.navbar-brand(href="/") 新世界

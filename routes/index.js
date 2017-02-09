@@ -43,7 +43,7 @@ router.get('/admin/user/list', User.signinRequired,User.adminRequired,User.list)
 
 //comment
 router.post('/user/comment',User.signinRequired,Comment.save);
-
 router.get('/results',Index.search);
+
 
 module.exports = router;
