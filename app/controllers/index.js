@@ -1,5 +1,5 @@
 var Movie = require('../models/movie.js');
-var Category = require('../models/category');
+var Category = require('../models/category.js');
 /* GET home page. 
     "/"  */
 exports.index = function (req, res, next) {
