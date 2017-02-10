@@ -34,12 +34,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(serveStatic(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret:'imooc',
+  secret:'imooc', // session 存储加密
   store:new mongoStore({
     url:dbUrl,
     collection:'session',
   }),
-  resave:false,
+  resave:false,//即使 session 没有被修改，也保存 session 值，默认为 true
 	saveUninitialized:true
 }));
 
