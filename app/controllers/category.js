@@ -32,3 +32,10 @@ exports.list = function (req, res) {
         })
     })
 };
+
+exports.channel=function (req, res) {
+    res.render('channel',{
+        title:'频道'
+    });
+}
+

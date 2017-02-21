@@ -13,9 +13,9 @@ var app = express();
 var serveStatic=require('serve-static');
 app.locals.moment = require('moment');
 mongoose.Promise = global.Promise
-// var dbUrl='mongodb://127.0.0.1:27017/movie';
+var dbUrl='mongodb://127.0.0.1:27017/movie';
 // var dbUrl='mongodb://<dbuser>:<dbpassword>@ds147799.mlab.com:47799/movie';
-var dbUrl='mongodb://admin:123456@ds147799.mlab.com:47799/movie';
+// var dbUrl='mongodb://admin:123456@ds147799.mlab.com:47799/movie';
 mongoose.connect(dbUrl);
 // view engine setup
 app.set('views', path.join(__dirname, '/app/views/pages'));
@@ -66,5 +66,4 @@ app.use(function (req, res, next) {
 
 // app.listen(port);
 console.log('imooc started on port ' + port);
-
 module.exports = app;

@@ -20,6 +20,10 @@ router.use(function (req, res, next) {
 // index page
 router.get('/', Index.index);
 
+//channel
+router.get('/channel',Category.channel);
+
+
 //category
 router.get('/admin/category/new',User.signinRequired,User.adminRequired,Category.new);
 router.post('/admin/category',User.signinRequired,User.adminRequired,Category.save);
